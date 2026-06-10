@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+</head>
+<body>
+    <h1>{{ page_title }}</h1>
+
+    <h3>Service Status</h3>
+    <form method="POST" action="/admin">
+        <ul>
+            {% for service in services %}
+                <li>
+                    <strong>{{ service.name }}</strong>:
+                    <select id="status" name="status_{{service.id}}">
+                        {% for status in service_statuses %}
+                            <option value="{{ status.id }}" {% if service.status_id == status.id %}selected{% endif %}>
+                                {{ status.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </li>
+                {% endfor %}
+            <button type="submit">Update</button>
+        </ul>
+    </form>
+</body>
+</html>

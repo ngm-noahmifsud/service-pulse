@@ -12,7 +12,7 @@
     <ul>
         {% for service in services %}
             <li>
-                <strong>{{ service.name }}</strong>: {{ service.status }}
+                <strong>{{ service.name }}</strong>: {{ service.status.name }}
             </li>
         {% endfor %}
     </ul>
