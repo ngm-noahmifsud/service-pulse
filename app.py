@@ -12,7 +12,11 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+from flask_migrate import Migrate
+
 db.init_app(app)
+migrate = Migrate(app, db)
+
 
 
 @app.route("/")
@@ -27,6 +31,12 @@ def home():
         services=services,
         incidents=incidents
     )
+
+
+@app.route("/health")
+def health():
+    return {"status": "healthy"}, 200
+
 
 @app.route("/admin")
 def admin():
