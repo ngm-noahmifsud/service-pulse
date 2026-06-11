@@ -8,8 +8,8 @@
 <body>
     <h1>{{ page_title }}</h1>
 
-    <h3>Service Status</h3>
-    <form method="POST" action="/admin">
+    <h3>Edit Services</h3>
+    <form method="POST" action="/admin/update_status">
         <ul>
             {% for service in services %}
                 <li>
@@ -24,6 +24,53 @@
                 </li>
                 {% endfor %}
             <button type="submit">Update</button>
+        </ul>
+    </form>
+    <h3>Create Incident</h3>
+    <form method="POST" action="/admin/create_incident">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="status_id">Status:</label>
+        <select id="status_id" name="status_id">
+            {% for status in service_statuses %}
+                <option value="{{ status.id }}">{{ status.name }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea><br><br>
+        <label for="affected_services">Affected Services:</label><br>
+        {% for service in services %}
+            <input
+                type="checkbox"
+                id="service_{{ service.id }}"
+                name="affected_services"
+                value="{{ service.id }}"
+            >
+            <label for="service_{{ service.id }}">
+                {{ service.name }}
+            </label>
+            <br>
+        {% endfor %}
+
+        <button type="submit">Create Incident</button>
+    </form>
+    <h3>Remove Incidents</h3>
+    <form method="POST" action="/admin/remove_incidents">
+        <ul>
+            {% for incident in incidents %}
+                <li>
+                    <input
+                        type="checkbox"
+                        id="incident_{{ incident.id }}"
+                        name="remove_incidents"
+                        value="{{ incident.id }}"
+                    >
+                    <label for="incident_{{ incident.id }}">
+                        {{ incident.name }} (Status: {{ incident.status.name }})
+                    </label>
+                </li>
+            {% endfor %}
+            <button type="submit">Remove Selected Incidents</button>
         </ul>
     </form>
 </body>

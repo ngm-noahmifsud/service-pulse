@@ -16,5 +16,18 @@
             </li>
         {% endfor %}
     </ul>
+    <h3>Incidents</h3>
+    {% for incident in incidents %}
+    <div>
+        <p>{{ incident.name }}</p>
+        <p><strong>Status: </strong>{{ incident.status.name }}</p>
+        <p>{{ incident.message }}</p>
+        <strong>Affected Services: </strong>
+        {% for service in incident.affected_services %}
+            {{ service.name }} | 
+        {% endfor %}
+        </ul>
+        {% endfor %}
+    </div>
 </body>
 </html>
