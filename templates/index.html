@@ -3,31 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title }}</title>
+    <title>Service Pulse - {{ page_title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <h1>{{ page_title }}</h1>
+    {% include "components/navbar.html" %}
+    <h1 class="display-5 text-center fw-bold my-5">
+        {{ page_title }}
+    </h1>
 
-    <h3>Service Status</h3>
-    <ul>
-        {% for service in services %}
-            <li>
-                <strong>{{ service.name }}</strong>: {{ service.status.name }}
-            </li>
-        {% endfor %}
-    </ul>
-    <h3>Incidents</h3>
-    {% for incident in incidents %}
-    <div>
-        <p>{{ incident.name }}</p>
-        <p><strong>Status: </strong>{{ incident.status.name }}</p>
-        <p>{{ incident.message }}</p>
-        <strong>Affected Services: </strong>
-        {% for service in incident.affected_services %}
-            {{ service.name }} | 
-        {% endfor %}
-        </ul>
-        {% endfor %}
+    <section class="card bg-light border-0 shadow-sm mb-4 mx-auto" style="max-width: 700px;">
+        <div class="card-body">
+            <h3 class="card-title mb-3">Service Status</h3>
+
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in services %}
+                        <tr>
+                            <td><strong>{{ service.name }}</strong></td>
+                            <td>{{ service.status.name }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <div class="container">
+        <section class="mb-5">
+            <h3 class="fw-bold mb-4">Incidents</h3>
+
+            <div class="row g-4">
+                {% for incident in incidents %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">
+                                    {{ incident.name }}
+                                </h5>
+
+                                <p class="mb-2">
+                                    <strong>Status:</strong>
+                                    {{ incident.status.name }}
+                                </p>
+
+                                <p class="card-text">
+                                    {{ incident.message }}
+                                </p>
+
+                                <div>
+                                    <strong>Affected Services:</strong>
+                                    <div class="mt-2">
+                                        {% for service in incident.affected_services %}
+                                            <span class="badge bg-secondary me-1">
+                                                {{ service.name }}
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No active incidents.</p>
+                {% endfor %}
+            </div>
+        </section>
     </div>
 </body>
 </html>

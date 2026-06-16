@@ -5,10 +5,12 @@ services:
       - "5000:5000"
     environment:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/service_pulse
+      FLASK_DEBUG: "1"
     depends_on:
       - db
     volumes:
       - .:/app
+    command: flask --app app run --host=0.0.0.0 --port=5000 --debug
 
   db:
     image: postgres:16
